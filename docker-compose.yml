@@ -1,0 +1,27 @@
+version: '3.8'
+
+services:
+  web-server:
+    build:
+      context: .
+      dockerfile: ./web/Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - DB_HOST=db-server
+      - DB_USER=root
+      - DB_PASSWORD=examplepassword
+      - DB_NAME=mydatabase
+    depends_on:
+      - db-server
+
+  db-server:
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: examplepassword
+      MYSQL_DATABASE: mydatabase
+    volumes:
+      - db_data:/var/lib/mysql
+
+volumes:
+  db_data:
